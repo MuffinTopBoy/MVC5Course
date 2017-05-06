@@ -15,9 +15,10 @@ namespace MVC5Course.Controllers
         private FabricsEntities db = new FabricsEntities();
 
         // GET: Products
-        public ActionResult Index()
+        public ActionResult Index(bool Active=true)
         {
-            return View(db.Product.OrderByDescending(x=>x.ProductId).Take(10));
+            var data = db.Product.OrderByDescending(x => x.ProductId).Where(x=> x.Active.HasValue && x.Active==Active).Take(10);
+            return View(data);
         }
 
         // GET: Products/Details/5
