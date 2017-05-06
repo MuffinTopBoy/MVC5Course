@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MVC5Course.Models;
+using MVC5Course.Models.ViewModels;
 
 namespace MVC5Course.Controllers
 {
@@ -104,7 +105,6 @@ namespace MVC5Course.Controllers
             }
             return View(product);
         }
-
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -114,6 +114,18 @@ namespace MVC5Course.Controllers
             db.Product.Remove(product);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+        public ActionResult ListProducts()
+        {
+            var data = db.Product.Where(x => x.Active == true)
+                      .Select(x => new ProductListsVM()
+                      {
+                          ProductId = x.ProductId,
+                          ProductName = x.ProductName,
+                          Price = x.Price,
+                          Stock = x.Stock
+                      }).Take(10);
+            return View(data);
         }
 
         protected override void Dispose(bool disposing)
