@@ -13,7 +13,7 @@ namespace MVC5Course.Controllers
         // GET: EF
         public ActionResult Index()
         {
-            var data = db.Product.Where(x=>x.IsDeleted!=true).OrderByDescending(x=>x.ProductId).Take(10);
+            var data = db.Product.Where(x=>x.Is刪除!=true).OrderByDescending(x=>x.ProductId).Take(10);
             return View(data);
         }
 
@@ -76,11 +76,18 @@ namespace MVC5Course.Controllers
 
             if(data!=null)
             {
-                data.IsDeleted = true;
+                data.Is刪除 = true;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View();
+        }
+
+        public ActionResult Detail(int id)
+        {
+            var data = db.Database.SqlQuery<Product>("SELECT * FROM dbo.Product WHERE ProductId = @p0", id).FirstOrDefault();
+
+            return View(data);
         }
     }
 }
