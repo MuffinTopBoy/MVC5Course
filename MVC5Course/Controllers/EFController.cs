@@ -13,7 +13,7 @@ namespace MVC5Course.Controllers
         // GET: EF
         public ActionResult Index()
         {
-            var data = db.Product.OrderByDescending(x=>x.ProductId).Take(10);
+            var data = db.Product.Where(x=>x.IsDeleted!=true).OrderByDescending(x=>x.ProductId).Take(10);
             return View(data);
         }
 
@@ -72,11 +72,11 @@ namespace MVC5Course.Controllers
             //}
 
             //這一行等於上面四行
-            db.OrderLine.RemoveRange(data.OrderLine);
+            //db.OrderLine.RemoveRange(data.OrderLine);
 
             if(data!=null)
             {
-                db.Product.Remove(data);
+                data.IsDeleted = true;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
