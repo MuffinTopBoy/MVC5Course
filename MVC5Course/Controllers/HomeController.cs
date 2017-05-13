@@ -58,5 +58,10 @@ namespace MVC5Course.Controllers
         {
             return File("~/Content/12.jpg", "image/jpeg","HAHA.jpg");
         }
+        public ActionResult GetJson()
+        {
+            db.Configuration.LazyLoadingEnabled = false;
+            return Json(db.Product.Take(10),JsonRequestBehavior.AllowGet);
+        }
     }
 }

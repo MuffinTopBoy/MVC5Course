@@ -148,7 +148,8 @@ namespace MVC5Course.Controllers
         public ActionResult CreatProduct(ProductListsVM data)
         {
             if(ModelState.IsValid)
-            {               
+            {
+                TempData["Result"] = "商品新增成功!";
                 return RedirectToAction("ListProducts");
             }
             return View();
