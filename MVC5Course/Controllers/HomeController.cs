@@ -54,5 +54,9 @@ namespace MVC5Course.Controllers
         {
             return View();
         }
+        public ActionResult GetFile()
+        {
+            return File("~/Content/12.jpg", "image/jpeg","HAHA.jpg");
+        }
     }
 }
