@@ -14,10 +14,10 @@ namespace MVC5Course.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if(this.Price>2&&this.Stock>0)
-            {
-                yield return new ValidationResult("商品太少少0000", new string[] { "stock","Order"});
-            }
+            //if(this.Price>2&&this.Stock>0)
+            //{
+            //    yield return new ValidationResult("商品太少少0000", new string[] { "stock","Order"});
+            //}
             yield break;
         }
     }
