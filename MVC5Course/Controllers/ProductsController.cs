@@ -11,7 +11,7 @@ using MVC5Course.Models.ViewModels;
 
 namespace MVC5Course.Controllers
 {
-    public class ProductsController : Controller
+    public class ProductsController : BaseController
     {
         //private FabricsEntities db = new FabricsEntities();
         ProductRepository repo = RepositoryHelper.GetProductRepository();
@@ -112,6 +112,8 @@ namespace MVC5Course.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Product product = repo.Find(id);
+            //這一行是關掉驗證
+            repo.UnitOfWork.Context.Configuration.ValidateOnSaveEnabled = false;
             repo.Delete(product);
             repo.UnitOfWork.Commit();
             return RedirectToAction("Index");

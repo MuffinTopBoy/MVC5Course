@@ -13,7 +13,7 @@ namespace MVC5Course.Models
         }
         public IQueryable<Product> Get有上架商品依ID排序且取十筆(bool Active = true)
         {
-            return this.All().OrderByDescending(x => x.ProductId).Where(x => x.Active.HasValue && x.Active == Active).Take(10);
+            return this.All().OrderByDescending(x => x.ProductId).Where(x =>x.Is刪除==null&& x.Active.HasValue && x.Active == Active).Take(10);
         }
 
         public IQueryable<Product> 取得所有上架商品並依ID反排序(bool Active,bool showAll=false)
@@ -33,10 +33,10 @@ namespace MVC5Course.Models
             //db.Entry(product).State = EntityState.Modified;
             this.UnitOfWork.Context.Entry(product).State = EntityState.Modified;
         }
-        //public void Delete(Product product)
-        //{
-        //    this.re
-        //}
+        public override void Delete(Product entity)
+        {           
+            entity.Is刪除 = true;
+        }
     }
 
     public interface IProductRepository : IRepository<Product>
