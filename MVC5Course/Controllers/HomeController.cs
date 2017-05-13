@@ -12,12 +12,36 @@ namespace MVC5Course.Controllers
         {
             return View();
         }
+        public ActionResult Unknow()
+        {
+            return View("haha");
+        }
 
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
 
             return View();
+        }
+
+        public ActionResult PartialAbout()
+        {
+            ViewBag.Message = "Your application description page.";
+
+            if(Request.IsAjaxRequest())
+            {
+                return View();
+            }
+            else
+            {
+                return View("About");
+            }
+            
+        }
+
+        public ActionResult SomeAction()
+        {
+            return PartialView("SuccessRedirect","/");
         }
 
         public ActionResult Contact()
