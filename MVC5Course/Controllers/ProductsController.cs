@@ -16,7 +16,7 @@ namespace MVC5Course.Controllers
         //private FabricsEntities db = new FabricsEntities();
         ProductRepository repo = RepositoryHelper.GetProductRepository();
         // GET: Products
-        public ActionResult Index(bool Active=true)
+        public ActionResult Index(bool Active = true)
         {
             var data = repo.Get有上架商品依ID排序且取十筆(Active);
             return View(data);
@@ -118,9 +118,17 @@ namespace MVC5Course.Controllers
             repo.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
-        public ActionResult ListProducts()
+        public ActionResult ListProducts(string q, int stock_S = 0, int stock_E = 9999999)
         {
-            var data = repo.取得所有上架商品並依ID反排序(true)
+            var data = repo.取得所有上架商品並依ID反排序(true);
+            if (!string.IsNullOrEmpty(q))
+            {
+                data = data.Where(x => x.ProductName.Contains(q));
+            }
+
+            data = data.Where(x => x.Stock > stock_S && x.Stock < stock_E);
+
+            ViewData.Model = data
                       .Select(x => new ProductListsVM()
                       {
                           ProductId = x.ProductId,
@@ -128,7 +136,7 @@ namespace MVC5Course.Controllers
                           Price = x.Price,
                           Stock = x.Stock
                       }).Take(10);
-            return View(data);
+            return View();
         }
 
         //protected override void Dispose(bool disposing)
@@ -147,7 +155,7 @@ namespace MVC5Course.Controllers
         [HttpPost]
         public ActionResult CreatProduct(ProductListsVM data)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 TempData["Result"] = "商品新增成功!";
                 return RedirectToAction("ListProducts");

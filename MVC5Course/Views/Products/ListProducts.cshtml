@@ -6,9 +6,15 @@
 
 <h2>ListProducts</h2>
 <h1>@TempData["Result"]</h1>
-<p>
-    @Html.ActionLink("Create New", "CreatProduct")
-</p>
+<form method="post">
+    商品名稱
+    @Html.TextBox("q")
+    商品數量
+    @Html.TextBox("stock_S")
+    -
+    @Html.TextBox("stock_E")
+    <button type="submit" >搜尋</button>
+</form>
 <table class="table">
     <tr>
         <th>
