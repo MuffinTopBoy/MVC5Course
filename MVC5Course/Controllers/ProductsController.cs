@@ -81,11 +81,13 @@ namespace MVC5Course.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProductId,ProductName,Price,Active,Stock")] Product product)
+        public ActionResult Edit(int id,string c)
         {
-            if (ModelState.IsValid)
+            //[Bind(Include = "ProductId,ProductName,Price,Active,Stock")] Product product
+            var product = repo.Find(id);
+            if(TryUpdateModel(product,new string[] { "ProductId", "ProductName", "Price", "Active", "Stock" } ))
             {
-                repo.Update(product);
+                //repo.Update(product);
                 repo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
@@ -118,15 +120,19 @@ namespace MVC5Course.Controllers
             repo.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
-        public ActionResult ListProducts(string q, int stock_S = 0, int stock_E = 9999999)
+        public ActionResult ListProducts(SearchViewModul search)
         {
             var data = repo.取得所有上架商品並依ID反排序(true);
-            if (!string.IsNullOrEmpty(q))
-            {
-                data = data.Where(x => x.ProductName.Contains(q));
-            }
 
-            data = data.Where(x => x.Stock > stock_S && x.Stock < stock_E);
+            if(ModelState.IsValid)
+            {
+                if (!string.IsNullOrEmpty(search.Name))
+                {
+                    data = data.Where(x => x.ProductName.Contains(search.Name));
+                }
+
+                data = data.Where(x => x.Stock > search.Stock_S && x.Stock < search.Stock_E);
+            }
 
             ViewData.Model = data
                       .Select(x => new ProductListsVM()
