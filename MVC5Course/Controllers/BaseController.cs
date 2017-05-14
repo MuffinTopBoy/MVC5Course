@@ -19,5 +19,10 @@ namespace MVC5Course.Controllers
         //    //寫這段打錯網址找不到Action的時候，會直接導回首頁
         //    this.RedirectToAction("Index", "Home").ExecuteResult(this.ControllerContext);
         //}
+        [LocationOnly]
+        public ActionResult Debug()
+        {
+            return Content("Hello");
+        }
     }
 }

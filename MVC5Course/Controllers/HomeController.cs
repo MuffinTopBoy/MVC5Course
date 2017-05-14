@@ -17,13 +17,15 @@ namespace MVC5Course.Controllers
             return View("haha");
         }
         [ShareAbout]
+        [LocationOnly]
+        [HandleError]
         public ActionResult About()
         {
             //ViewBag.Message = "Your application description page.";
 
             return View();
         }
-        //[ShareAbout(MyProperty ="haha")]
+        [ShareAbout(MyProperty ="haha")]
         public ActionResult PartialAbout()
         {
             //ViewBag.Message = "Your application description page.";
@@ -62,6 +64,11 @@ namespace MVC5Course.Controllers
         {
             db.Configuration.LazyLoadingEnabled = false;
             return Json(db.Product.Take(10),JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult VT()
+        {
+            ViewData.Model = new int[] { 1, 2, 3, 4, 5 };
+            return PartialView();
         }
     }
 }
