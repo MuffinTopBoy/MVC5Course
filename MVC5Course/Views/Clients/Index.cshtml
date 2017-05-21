@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<MVC5Course.Models.Client>
+@using PagedList
+@using PagedList.Mvc
 
 @{
     ViewBag.Title = "Index";
@@ -6,9 +8,17 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
+@using (Html.BeginForm("Index", "Clients", FormMethod.Get))
+{
+    <text>
+        篩選:
+        @Html.DropDownList("CreditRating", "信用額度")
+        <button>按下搜尋</button>
+    </text>
+
+}
+
 <table class="table">
     <tr>
         <th>
@@ -23,29 +33,39 @@
         <th>
             @Html.DisplayNameFor(model => model.Gender)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreditRating)
+        </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MiddleName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Gender)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ClientId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ClientId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ClientId })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MiddleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreditRating)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ClientId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ClientId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ClientId })
+            </td>
+        </tr>
+    }
 
 </table>
+@Html.PagedListPager(Model as IPagedList,(p)=>Url.Action("Index",new { PageNamber =p}))
+
+
